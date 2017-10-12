@@ -1,11 +1,9 @@
-var dbConnection = require ('../infra/connectionFactory');
 module.exports = function (app) {
     app.get('/produtos', function (req, res) {
-        var connection = dbConnection();
-        connection.query('Select * from produtos',function(err,result){
-            console.log(result);
-            console.log('------------');
-            res.render('produtos/lista',{lista:result});
+        var connection = app.infra.connectionFactory();
+        var produtosBanco = app.infra.produtosBanco;
+        produtosBanco.lista(function(erros,resultado){
+            res.render('produtos/lista',{lista:resultado});
         });
 
         connection.end();
